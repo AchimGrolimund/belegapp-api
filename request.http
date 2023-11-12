@@ -1,0 +1,23 @@
+### Send POST request with json body
+POST http://localhost:8080/v1/beleg
+Content-Type: application/json
+
+{
+  "price": 21.99,
+  "mwst": 7.8,
+  "date": "31.12.2023",
+  "shop": "Migros"
+}
+
+
+### Send GET request
+GET http://localhost:8080/v1/beleg
+Content-Type: application/json
+
+### Send GET request with id
+GET http://localhost:8080/v1/beleg/2
+Content-Type: application/json
+
+### Send DELETE request with id
+DELETE http://localhost:8080/v1/beleg/1
+Content-Type: application/json
