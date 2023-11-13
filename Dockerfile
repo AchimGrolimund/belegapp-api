@@ -8,7 +8,7 @@ RUN apk --no-cache add ca-certificates
 # Build app binary for final stage
 FROM --platform=$BUILDPLATFORM golang:1.21.0 AS builder
 WORKDIR /app
-ARG TARGETOS TARGETARCH
+ARG TARGETOS=TARGETARCH
 COPY .. .
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=$TARGETARCH go build -ldflags "-w -s" -a -o /main .
