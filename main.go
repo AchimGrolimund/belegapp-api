@@ -12,7 +12,15 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+var (
+	// Version is provided by ldflags
+	Version = "unspecified"
+	// Build is provided by ldflags
+	Build = "unspecified"
+)
+
 func main() {
+	log.Printf("Starting beleg-app version: %s, build: %s\n", Version, Build)
 	dbURL := "postgres://root:root@localhost:5432/beleg_db"
 	dbPool, err := connectToDB(dbURL)
 	if err != nil {

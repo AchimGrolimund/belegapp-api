@@ -1,15 +1,23 @@
-FROM ubuntu:latest
+# Obtain certs for final stage
+FROM alpine:3.11.5 as authority
+RUN mkdir /user && \
+    echo 'appuser:x:1000:1000:appuser:/:' > /user/passwd && \
+    echo 'appgroup:x:1000:' > /user/group
+RUN apk --no-cache add ca-certificates
 
+# Build app binary for final stage
+FROM --platform=$BUILDPLATFORM golang:1.21.0 AS builder
+WORKDIR /app
+ARG TARGETOS TARGETARCH
+COPY .. .
+RUN go mod download
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=$TARGETARCH go build -ldflags "-w -s" -a -o /main .
 
-# Variables
-VERSION=`git describe --tags --always`
-BUILD=`date +%FT%T%z`
-MODULE_PATH="github.com/GrolimundSolutions/aws_scheduler/cmd/scheduler/schedulermain"
-
-# Setup the -ldflags option for go build here
-LDFLAGS=-ldflags "-w -s -X ${MODULE_PATH}.Version=${VERSION} -X ${MODULE_PATH}.Build=${BUILD}"
-
-# Build Command
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -o ./${BINARY} ./cmd/scheduler/
-
-ENTRYPOINT ["top", "-b"]
+# Final stage
+FROM scratch
+COPY --from=authority /user/group /user/passwd /etc/
+COPY --from=authority /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=builder /main ./
+USER appuser:appgroup
+EXPOSE 8080
+ENTRYPOINT ["./main"]
