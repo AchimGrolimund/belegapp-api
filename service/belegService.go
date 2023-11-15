@@ -25,10 +25,10 @@ import (
 )
 
 type BelegService struct {
-	repo *repository.BelegRepository
+	repo repository.BelegRepositoryInterface
 }
 
-func NewBelegService(repo *repository.BelegRepository) *BelegService {
+func NewBelegService(repo repository.BelegRepositoryInterface) *BelegService {
 	return &BelegService{repo: repo}
 }
 
