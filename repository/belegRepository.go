@@ -20,6 +20,13 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+type BelegRepositoryInterface interface {
+	GetBelegById(ctx context.Context, id int) (*domain.Beleg, error)
+	CreateBeleg(ctx context.Context, beleg *domain.Beleg) error
+	DeleteBelegById(ctx context.Context, id int) error
+	GetAllBelege(ctx context.Context) ([]domain.Beleg, error)
+}
+
 type BelegRepository struct {
 	db *pgxpool.Pool
 }
