@@ -12,4 +12,8 @@ build:
 clean:
 	rm -rf ./build
 
+.Phony: test
+test:
+	go test -v ./... -coverprofile=coverage.out -covermode=atomic && go tool cover -html=coverage.out -o coverage.html
+
 
