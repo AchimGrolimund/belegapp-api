@@ -40,3 +40,31 @@ func TestGetAllBelege(t *testing.T) {
 
 	mockRepo.AssertExpectations(t)
 }
+
+func TestDeleteBelegById(t *testing.T) {
+	mockRepo := new(mocks.BelegRepository)
+	mockRepo.On("DeleteBelegById", mock.Anything, mock.AnythingOfType("int")).Return(nil)
+
+	service := NewBelegService(mockRepo)
+
+	err := service.DeleteBelegById(context.Background(), 1)
+
+	assert.NoError(t, err)
+
+	mockRepo.AssertExpectations(t)
+}
+
+func TestCreateBeleg(t *testing.T) {
+	mockRepo := new(mocks.BelegRepository)
+	newBeleg := &domain.Beleg{Price: 100.0, Mwst: 19.0, Date: "2021-01-01", Shop: "TestShop"}
+
+	mockRepo.On("CreateBeleg", mock.Anything, newBeleg).Return(nil)
+
+	service := NewBelegService(mockRepo)
+
+	err := service.CreateBeleg(context.Background(), newBeleg)
+
+	assert.NoError(t, err)
+
+	mockRepo.AssertExpectations(t)
+}
