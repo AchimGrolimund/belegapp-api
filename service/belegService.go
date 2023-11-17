@@ -28,6 +28,12 @@ type BelegService struct {
 	repo repository.BelegRepositoryInterface
 }
 
+type BelegServiceInterface interface {
+	GetBelegById(ctx context.Context, id int) (*domain.Beleg, error)
+	CreateBeleg(ctx context.Context, beleg *domain.Beleg) error
+	// Weitere Methoden...
+}
+
 func NewBelegService(repo repository.BelegRepositoryInterface) *BelegService {
 	return &BelegService{repo: repo}
 }

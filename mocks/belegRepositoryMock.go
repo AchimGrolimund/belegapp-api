@@ -11,13 +11,13 @@ type BelegRepository struct {
 }
 
 func (m *BelegRepository) CreateBeleg(ctx context.Context, beleg *domain.Beleg) error {
-	//TODO implement me
-	panic("implement me")
+	args := m.Called(ctx, beleg)
+	return args.Error(0)
 }
 
 func (m *BelegRepository) DeleteBelegById(ctx context.Context, id int) error {
-	//TODO implement me
-	panic("implement me")
+	args := m.Called(ctx, id)
+	return args.Error(0)
 }
 
 func (m *BelegRepository) GetAllBelege(ctx context.Context) ([]domain.Beleg, error) {
@@ -29,5 +29,3 @@ func (m *BelegRepository) GetBelegById(ctx context.Context, id int) (*domain.Bel
 	args := m.Called(ctx, id)
 	return args.Get(0).(*domain.Beleg), args.Error(1)
 }
-
-// Weitere Mock-Methoden...
